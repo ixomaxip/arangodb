@@ -16,9 +16,9 @@ services:
       - ./data/airports:/data/airports
       - ./data/db:/var/lib/arangodb3
       - ./data/apps:/var/lib/arangodb3-apps
-    labels:
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:$(SRV)/web
+    # labels:
+      # - traefik.enable=true
+      # - traefik.frontend.rule=Host:$(SRV)/web
       # - traefik.port=8529
     # command: ["arangodb", "arangod", "--help"]
 
