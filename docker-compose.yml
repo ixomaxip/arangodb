@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  ci: &ci
+    build:
+      context: ci
+      dockerfile: Dockerfile
+      args:
+        ARANGO_VERSION: $ARANGO_VERSION
+    image: $REG/ci/$SRV:$CI
+    container_name: $SRV-ci
+    environment:
+      ARANGO_RANDOM_ROOT_PASSWORD: 1
+    volumes:
+      - ./data/db:/var/lib/arangodb3
+      - ./data/apps:/var/lib/arangodb3-apps
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.rule=PathPrefixStrip:/m1/$SRV
+  
+  rt:
+    <<: *ci
+    image: $REG/rt/$SRV:$CI
+    container_name: $SRV
+
