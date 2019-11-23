@@ -14,3 +14,11 @@ include ci/main.make
 
 # sh:
 # 	docker run --rm -ti --name arangodb-debug $(IMG) sh
+
+
+
+air-imp:
+	docker exec $(NAME) \
+	arangoimport \
+	--file /data/airports/airports.csv \
+	--collection airports --create-collection true --type csv --server.password `cat data/pwd`

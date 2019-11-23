@@ -7,7 +7,7 @@ services:
       args:
         ARANGO_VERSION: $ARANGO_VERSION
     image: $REG/ci/$SRV:$CI
-    container_name: $SRV-ci
+    container_name: $NAME
     ports:
       - 8529:8529
     environment:
