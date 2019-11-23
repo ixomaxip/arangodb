@@ -3,22 +3,31 @@ services:
   ci: &ci
     build:
       context: ci
-      dockerfile: Dockerfile
+      dockerfile: ci-base.dockerfile
       args:
         ARANGO_VERSION: $ARANGO_VERSION
     image: $REG/ci/$SRV:$CI
     container_name: $SRV-ci
+    ports:
+      - 8529:8529
     environment:
       ARANGO_RANDOM_ROOT_PASSWORD: 1
     volumes:
+      - ./data/airports:/data/airports
       - ./data/db:/var/lib/arangodb3
       - ./data/apps:/var/lib/arangodb3-apps
     labels:
       - traefik.enable=true
-      - traefik.frontend.rule=PathPrefixStrip:/m1/$SRV
-  
+      - traefik.frontend.rule=Host:$(SRV)/web
+      # - traefik.port=8529
+    # command: ["arangodb", "arangod", "--help"]
+
   rt:
     <<: *ci
     image: $REG/rt/$SRV:$CI
     container_name: $SRV
 
+networks:
+  default:
+    external:
+      name: rt_default
